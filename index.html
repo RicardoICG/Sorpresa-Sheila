@@ -309,7 +309,26 @@
     </div>
 
     <script>
+        // Función para iniciar la magia
         function iniciarSorpresa() {
+            // Reproducir música (Forzamos la carga y reproducción primero)
+            const audio = document.getElementById('bgMusic');
+            audio.load(); // Obliga al navegador a leer el archivo
+            audio.volume = 1.0; // Asegura que el volumen esté al máximo
+            
+            let playPromise = audio.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    // El audio empezó bien
+                    console.log("Música sonando");
+                }).catch(error => {
+                    // El navegador lo bloqueó
+                    console.log("Error de autoplay:", error);
+                });
+            }
+
+            // Ocultar pantalla de bienvenida
             const welcome = document.getElementById('welcome-screen');
             welcome.style.opacity = '0';
             setTimeout(() => {
@@ -317,16 +336,14 @@
                 welcome.style.display = 'none';
             }, 1500);
 
+            // Mostrar contenido principal
             const mainContent = document.getElementById('main-content');
             mainContent.style.visibility = 'visible';
             mainContent.style.opacity = '1';
 
-            const audio = document.getElementById('bgMusic');
-            audio.play().catch(e => console.log("El navegador bloqueó el audio automáticamente."));
-
+            // Iniciar pétalos
             crearPetalos();
         }
-
         function crearPetalos() {
             const main = document.getElementById('main-content');
             const cantidadPetalos = 30;
